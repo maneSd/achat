@@ -12,10 +12,10 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
-         stage('SonarQube') {
-                    steps {
-                    sh 'mvn sonar:sonar'
-                    }
-                }
+        stage('SonarQube') {
+            steps {
+                sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000'
+            }
+        }
     }
 }
