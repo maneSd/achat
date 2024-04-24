@@ -15,7 +15,7 @@ pipeline {
         stage('sonarqube') {
             steps {
                 withSonarQubeEnv('sonarqube') {
-                    sh 'mvn sonar:sonar -Dsonar.login=Wevioo@2023++'
+                    sh 'mvn sonar:sonar
                 }
             }
         }
