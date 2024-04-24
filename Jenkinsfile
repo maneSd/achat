@@ -14,8 +14,8 @@ pipeline {
         }
         stage('SonarQube') {
             steps {
-                withCredentials([string(credentialsId: 'sonar_credentials', variable: 'SONAR_PASSWORD')]) {
-                    sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=$SONAR_PASSWORD'
+                withCredentials([usernamePassword(credentialsId: 'sonarqube-credentials', usernameVariable: 'SONAR_USERNAME', passwordVariable: 'SONAR_PASSWORD')]) {
+                    sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=$SONAR_USERNAME -Dsonar.password=$SONAR_PASSWORD'
                 }
             }
         }
