@@ -12,7 +12,7 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
-        stage('SonarQube analysis') {
+        stage('SonarQube') {
             steps {
                 withSonarQubeEnv('Sonarqube') {
                     sh 'mvn sonar:sonar -Dsonar.login=Wevioo@2023++'
