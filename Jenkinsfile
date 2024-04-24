@@ -12,10 +12,10 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
-        stage('SonarQube') {
+        stage('SonarQube analysis') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'sonarqube-credentials', usernameVariable: 'SONAR_USERNAME', passwordVariable: 'SONAR_PASSWORD')]) {
-                    sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=$SONAR_USERNAME -Dsonar.password=$SONAR_PASSWORD'
+                withSonarQubeEnv('Sonarqube') {
+                    sh 'mvn sonar:sonar -Dsonar.login=Wevioo@2023++'
                 }
             }
         }
