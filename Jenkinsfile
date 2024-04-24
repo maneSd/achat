@@ -12,10 +12,11 @@ pipeline {
                 sh 'mvn clean compile'
             }
         }
-        stage('SonarQube') {
-            steps {
-                sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000'
-            }
-        }
+      stage('SonarQube') {
+                 steps {
+                     withCredentials([string(credentialsId: 'Wevioo@2023++', variable: 'SONAR_PASSWORD')]) {
+                         sh 'mvn sonar:sonar -Dsonar.host.url=http://192.168.50.4:9000 -Dsonar.login=$SONAR_PASSWORD'
+                     }
+                 }
     }
 }
