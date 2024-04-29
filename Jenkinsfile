@@ -9,20 +9,20 @@ pipeline {
             }
         }
          stage('Git') {
-                    steps {
-                        git branch: 'takwa',
-                         url: 'https://github.com/maneSd/achat.git'
+               steps {
+                    git branch: 'takwa',
+                    url: 'https://github.com/maneSd/achat.git'
                     }
                 }
-               stage('Maven build') {
-                    steps {
-                        sh 'mvn clean compile'
+         stage('Maven build') {
+                steps {
+                    sh 'mvn clean compile'
                     }
                 }
-                stage('sonarQube') {
-                     steps {
-                             echo 'loading ...'
-                            }
-                    }
+         stage('sonarQube') {
+                steps {
+                    echo 'loading ...'
+                       }
+                }
     }
 }
