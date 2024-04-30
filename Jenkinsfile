@@ -3,7 +3,8 @@ pipeline {
     stages {
         stage('Git') {
             steps {
-                git branch: 'takwa', url: 'https://github.com/maneSd/achat.git'
+                git branch: 'takwa',
+                url: 'https://github.com/maneSd/achat.git'
             }
         }
         stage('Maven build') {
