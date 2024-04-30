@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Git') {
+        stage('Git-check') {
             steps {
                 git branch: 'takwa', url: 'https://github.com/maneSd/achat.git'
             }
         }
-        stage('Maven') {
+        stage('Maven-check') {
             steps {
                 sh 'mvn clean compile'
             }
@@ -17,7 +17,7 @@ pipeline {
                  sh 'mvn install'
             }
         }
-        stage('sonarqube') {
+        stage('sonarqube-check') {
              steps {
                 withSonarQubeEnv('sonarqube') {
                     sh 'mvn sonar:sonar'
