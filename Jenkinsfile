@@ -3,7 +3,6 @@ pipeline {
     stages {
         stage('Git') {
             steps {
-                echo 'Hello touta Im here'
                 git branch: 'takwa', url: 'https://github.com/maneSd/achat.git'
             }
         }
