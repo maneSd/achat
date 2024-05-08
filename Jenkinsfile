@@ -33,7 +33,7 @@ pipeline {
 
                     // Get group ID from the pom.xml file
                     def pomXml = readFile('pom.xml')
-                    def groupId = pomXml.'*'.find { it.name() == 'groupId' }.text()
+                    def groupId = pomXml.groupId.text()
 
                     // Define artifact details
                     def artifactId = 'achat'
