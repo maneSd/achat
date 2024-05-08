@@ -31,9 +31,9 @@ pipeline {
                     def nexusPassword = 'admin'
                     def nexusUrl = 'http://192.168.50.4:8081/repository/maven-releases/'
 
-                    // Get group ID from the pom.xml file
+                    // Read pom.xml file and extract groupId
                     def pomXml = readFile('pom.xml')
-                    def groupId = pomXml.groupId.text()
+                    def groupId = new XmlSlurper().parseText(pomXml).groupId.text()
 
                     // Define artifact details
                     def artifactId = 'achat'
