@@ -48,23 +48,20 @@ pipeline {
                        }
                    }
                }
-                stage('Run Docker Compose') {
-                           steps {
-                               sh 'docker-compose up -d'
-                           }
-                       }
-                   }
-           }
+             stage('Run Docker Compose') {
+                      steps {
+                          sh 'docker-compose up -d'
+                      }
+                  }
+              }
 
-
-         post {
-                success {
-                    emailext (
-                        to: ' msaidani86@gmail.com',
-                        subject: 'Pipeline Jenkins construit avec succès',
-                        body: 'Votre pipeline Jenkins a été construit avec succès.'
-                    )
-                }
-            }
-
-}
+              post {
+                  success {
+                      emailext (
+                          to: 'msaidani86@gmail.com',
+                          subject: 'Pipeline Jenkins construit avec succès',
+                          body: 'Votre pipeline Jenkins a été construit avec succès.'
+                      )
+                  }
+              }
+          }
