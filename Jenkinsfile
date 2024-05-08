@@ -9,15 +9,19 @@ pipeline {
         }
         stage('Maven') {
             steps {
-                sh 'mvn clean compile'
+                sh 'mvn clean install'
             }
         }
-        stage('sonarqube') {
-            steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar'
+               stage('SonarQube analysis') {
+                        steps {
+                            script {
+                                // Set Sonarqube login and password
+                                def sonarToken = 'squ_0af291f67522c3a856788c1b7ff5606d6da75ea2'
+
+                                // Run Sonarqube analysis
+                                sh "mvn sonar:sonar -Dsonar.login=${sonarToken} "
+                            }
+                        }
+                    }
                 }
             }
-        }
-    }
-}
