@@ -33,12 +33,23 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build('achat-image:latest', '-f Dockerfile .')
+                sh 'docker build -t achat:1.0.0 -f Dockerfile .'
                 }
             }
         }
 
-        }
+               stage('Push Docker Image to DockerHub') {
+                   steps {
+                       script {
+                           withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                               sh "docker login -u manelsaidani27 -p Wevioo@2023++"
+                               sh "docker push manelsaidani27/achat:1.0.0"
+                           }
+                       }
+                   }
+               }
+           }
+
 
          post {
                 success {
