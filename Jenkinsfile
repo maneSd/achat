@@ -30,7 +30,16 @@ pipeline {
                 }
             }
         }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build('achat-image:latest', '-f Dockerfile .')
+                }
+            }
         }
+
+        }
+
          post {
                 success {
                     emailext (

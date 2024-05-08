@@ -1,3 +1,4 @@
-FROM openjdk:11-jdk
+FROM openjdk:17-jdk-alpine
 EXPOSE 8082
-ADD target/ac
+ADD target/timesheet-devops-1.0.jar timesheet-devops-1.0.jar
+ENTRYPOINT ["java", "-jar", "/timesheet-devops-1.0.jar"]
