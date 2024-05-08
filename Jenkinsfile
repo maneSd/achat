@@ -1,10 +1,5 @@
-
- pipeline {
-     agent any
-
-     environment {
-         MAVEN_HOME = '/usr/share/maven'
-     }
+pipeline {
+    agent any
 
     stages {
         stage('Git') {
@@ -14,7 +9,7 @@
         }
         stage('Maven Build') {
             steps {
-                sh "${MAVEN_HOME}/bin/mvn clean install"
+                sh 'mvn clean install'
             }
         }
         stage('SonarQube Analysis') {
@@ -24,22 +19,29 @@
                     def sonarToken = 'squ_0af291f67522c3a856788c1b7ff5606d6da75ea2'
 
                     // Run Sonarqube analysis
-                    sh "${MAVEN_HOME}/bin/mvn sonar:sonar -Dsonar.login=${sonarToken}"
+                    sh "mvn sonar:sonar -Dsonar.login=${sonarToken}"
                 }
             }
         }
         stage('Nexus Deployment') {
             steps {
                 script {
-                    def nexusUsername = 'your_nexus_username'
-                    def nexusPassword = 'your_nexus_password'
-                    def nexusUrl = 'http://your_nexus_url/repository/maven-releases/'
-                    def groupId = 'tn.esprit.rh'
+                    // Set Nexus credentials
+                    def nexusUsername = 'admin'
+                    def nexusPassword = 'admin'
+                    def nexusUrl = 'http://192.168.50.4:8081/repository/maven-releases/'
+
+                    // Get group ID from the pom.xml file
+                    def pomXml = readFile('pom.xml')
+                    def groupId = pomXml.'*'.find { it.name() == 'groupId' }.text()
+
+                    // Define artifact details
                     def artifactId = 'achat'
                     def version = '1.0'
                     def artifactPath = "${env.WORKSPACE}/target/achat-${version}.jar"
 
-                    sh "${MAVEN_HOME}/bin/mvn deploy:deploy-file -Durl=${nexusUrl} -DrepositoryId=nexus -Dfile=${artifactPath} -DgroupId=${groupId} -DartifactId=${artifactId} -Dversion=${version} -Dpackaging=jar -DgeneratePom=true -DrepositoryUsername=${nexusUsername} -DrepositoryPassword=${nexusPassword}"
+                    // Deploy artifact to Nexus
+                    sh "mvn deploy:deploy-file -Durl=${nexusUrl} -DrepositoryId=nexus -Dfile=${artifactPath} -DgroupId=${groupId} -DartifactId=${artifactId} -Dversion=${version} -Dpackaging=jar -DgeneratePom=true -DrepositoryUsername=${nexusUsername} -DrepositoryPassword=${nexusPassword}"
                 }
             }
         }
