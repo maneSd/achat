@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        MAVEN_HOME = tool 'Maven'
+    }
+
     stages {
         stage('Git') {
             steps {
@@ -9,7 +13,7 @@ pipeline {
         }
         stage('Maven Build') {
             steps {
-                sh 'mvn clean install'
+                sh "${MAVEN_HOME}/bin/mvn clean install"
             }
         }
         stage('SonarQube Analysis') {
@@ -19,18 +23,22 @@ pipeline {
                     def sonarToken = 'squ_0af291f67522c3a856788c1b7ff5606d6da75ea2'
 
                     // Run Sonarqube analysis
-                    sh "mvn sonar:sonar -Dsonar.login=${sonarToken}"
+                    sh "${MAVEN_HOME}/bin/mvn sonar:sonar -Dsonar.login=${sonarToken}"
                 }
             }
         }
         stage('Nexus Deployment') {
             steps {
                 script {
-                    def nexusUsername = 'admin '
-                    def nexusPassword = 'admin'
-                    def nexusUrl = 'http://http://192.168.50.4:8081/repository/maven-releases/'
+                    def nexusUsername = 'your_nexus_username'
+                    def nexusPassword = 'your_nexus_password'
+                    def nexusUrl = 'http://your_nexus_url/repository/maven-releases/'
+                    def groupId = 'tn.esprit.rh'
+                    def artifactId = 'achat'
+                    def version = '1.0'
+                    def artifactPath = "${env.WORKSPACE}/target/achat-${version}.jar"
 
-                    sh "mvn deploy:deploy-file -Durl=${nexusUrl} -DrepositoryId=nexus -Dfile=path/to/your/artifact.jar -DgroupId=your.group.id -DartifactId=artifact-id -Dversion=version -Dpackaging=jar -DgeneratePom=true -DrepositoryId=nexus -DrepositoryUsername=${nexusUsername} -DrepositoryPassword=${nexusPassword}"
+                    sh "${MAVEN_HOME}/bin/mvn deploy:deploy-file -Durl=${nexusUrl} -DrepositoryId=nexus -Dfile=${artifactPath} -DgroupId=${groupId} -DartifactId=${artifactId} -Dversion=${version} -Dpackaging=jar -DgeneratePom=true -DrepositoryUsername=${nexusUsername} -DrepositoryPassword=${nexusPassword}"
                 }
             }
         }
