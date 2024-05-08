@@ -26,7 +26,6 @@ pipeline {
         stage('Nexus') {
             steps {
                 script {
-                    // Déploiement dans Nexus
                     sh 'mvn deploy -Dmaven.test.skip=true'
                 }
             }
