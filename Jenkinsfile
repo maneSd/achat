@@ -26,12 +26,10 @@ pipeline {
         stage('Nexus Deployment') {
             steps {
                 script {
-                    // Set Nexus credentials
-                    def nexusUsername = 'your_nexus_username'
-                    def nexusPassword = 'your_nexus_password'
-                    def nexusUrl = 'http://your_nexus_url/repository/maven-releases/'
+                    def nexusUsername = 'admin '
+                    def nexusPassword = 'admin'
+                    def nexusUrl = 'http://http://192.168.50.4:8081/repository/maven-releases/'
 
-                    // Deploy artifacts to Nexus
                     sh "mvn deploy:deploy-file -Durl=${nexusUrl} -DrepositoryId=nexus -Dfile=path/to/your/artifact.jar -DgroupId=your.group.id -DartifactId=artifact-id -Dversion=version -Dpackaging=jar -DgeneratePom=true -DrepositoryId=nexus -DrepositoryUsername=${nexusUsername} -DrepositoryPassword=${nexusPassword}"
                 }
             }
