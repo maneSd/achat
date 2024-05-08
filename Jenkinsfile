@@ -36,17 +36,16 @@ pipeline {
         }
     }
 
-               stage('Push Docker Image to DockerHub') {
-                   steps {
-                       script {
-                         withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                             sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
-                             sh "docker push manelsaidani27/achat:1.0.0"
-                         }
-
-                       }
-                   }
-               }
+            stage('Push Docker Image to DockerHub') {
+                        steps {
+                            script {
+                                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
+                                    sh "docker push manelsaidani27/achat:1.0.0"
+                                }
+                            }
+                        }
+                    }
              stage('Run Docker Compose') {
                       steps {
                           sh 'docker-compose up -d'
