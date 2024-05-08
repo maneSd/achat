@@ -30,13 +30,11 @@ pipeline {
                 }
             }
         }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                sh 'docker build -t achat:1.0.0 -f Dockerfile .'
-                }
-            }
+    stage('Build Docker Image') {
+        steps {
+            sh 'docker build -t achat:1.0.0 .'
         }
+    }
 
                stage('Push Docker Image to DockerHub') {
                    steps {
