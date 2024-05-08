@@ -7,12 +7,12 @@ pipeline {
                 git branch: 'Manel_Branch', url: 'https://github.com/maneSd/achat.git'
             }
         }
-        stage('Maven Build') {
+        stage('Maven') {
             steps {
                 sh 'mvn clean install'
             }
         }
-        stage('SonarQube Analysis') {
+        stage('SonarQube analysis') {
             steps {
                 script {
                     // Set Sonarqube login and password
@@ -23,25 +23,11 @@ pipeline {
                 }
             }
         }
-        stage('Nexus Deployment') {
+        stage('Nexus') {
             steps {
                 script {
-                    // Set Nexus credentials
-                    def nexusUsername = 'admin'
-                    def nexusPassword = 'admin'
-                    def nexusUrl = 'http://192.168.50.4:8081/repository/maven-releases/'
-
-                    // Read pom.xml file and extract groupId
-                    def pomXml = readFile('pom.xml')
-                    def groupId = new XmlSlurper().parseText(pomXml).groupId.text()
-
-                    // Define artifact details
-                    def artifactId = 'achat'
-                    def version = '1.0'
-                    def artifactPath = "${env.WORKSPACE}/target/achat-${version}.jar"
-
-                    // Deploy artifact to Nexus
-                    sh "mvn deploy:deploy-file -Durl=${nexusUrl} -DrepositoryId=nexus -Dfile=${artifactPath} -DgroupId=${groupId} -DartifactId=${artifactId} -Dversion=${version} -Dpackaging=jar -DgeneratePom=true -DrepositoryUsername=${nexusUsername} -DrepositoryPassword=${nexusPassword}"
+                    // Déploiement dans Nexus
+                    sh 'mvn deploy -Dmaven.test.skip=true'
                 }
             }
         }
