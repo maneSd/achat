@@ -1,10 +1,6 @@
 pipeline {
-     agent {
-            docker {
-                image 'docker:latest'
-                args '-v /var/run/docker.sock:/var/run/docker.sock'
-            }
-        }
+    agent any
+
     stages {
         stage('Git') {
             steps {
@@ -34,36 +30,35 @@ pipeline {
                 }
             }
         }
-    stage('Build Docker Image') {
-        steps {
-            sh 'docker build -t achat:1.0.0 .'
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t achat:1.0.0 .'
+            }
+        }
+        stage('Push Docker Image to DockerHub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
+                        sh "docker push manelsaidani27/achat:1.0.0"
+                    }
+                }
+            }
+        }
+        stage('Run Docker Compose') {
+            steps {
+                sh 'docker-compose up -d'
+            }
         }
     }
 
-            stage('Push Docker Image to DockerHub') {
-                        steps {
-                            script {
-                                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
-                                    sh "docker push manelsaidani27/achat:1.0.0"
-                                }
-                            }
-                        }
-                    }
-             stage('Run Docker Compose') {
-                      steps {
-                          sh 'docker-compose up -d'
-                      }
-                  }
-              }
-
-              post {
-                  success {
-                      emailext (
-                          to: 'msaidani86@gmail.com',
-                          subject: 'Pipeline Jenkins construit avec succès',
-                          body: 'Votre pipeline Jenkins a été construit avec succès.'
-                      )
-                  }
-              }
-          }
+    post {
+        success {
+            emailext (
+                to: 'msaidani86@gmail.com',
+                subject: 'Pipeline Jenkins construit avec succès',
+                body: 'Votre pipeline Jenkins a été construit avec succès.'
+            )
+        }
+    }
+}
