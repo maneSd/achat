@@ -1,9 +1,10 @@
-pipeline {
-    agent any
 
-    environment {
-        MAVEN_HOME = tool 'Maven'
-    }
+ pipeline {
+     agent any
+
+     environment {
+         MAVEN_HOME = '/usr/share/maven'
+     }
 
     stages {
         stage('Git') {
