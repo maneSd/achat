@@ -12,16 +12,17 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
-               stage('SonarQube analysis') {
-                        steps {
-                            script {
-                                // Set Sonarqube login and password
-                                def sonarToken = 'squ_0af291f67522c3a856788c1b7ff5606d6da75ea2'
+        stage('SonarQube analysis') {
+            steps {
+                script {
+                    // Set Sonarqube login and password
+                    def sonarToken = 'squ_0af291f67522c3a856788c1b7ff5606d6da75ea2'
+                    def branchName = 'Manel_Branch'
 
-                                // Run Sonarqube analysis
-                                sh "mvn sonar:sonar -Dsonar.login=${sonarToken} "
-                            }
-                        }
-                    }
+                    // Run Sonarqube analysis with specified branch
+                    sh "mvn sonar:sonar -Dsonar.login=${sonarToken} -Dsonar.branch.name=${branchName}"
                 }
             }
+        }
+    }
+}
