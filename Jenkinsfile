@@ -23,12 +23,15 @@ pipeline {
                 }
             }
         }
-        stage('Nexus') {
-            steps {
-                script {
-                    sh 'mvn deploy -Dmaven.test.skip=true'
-                }
-            }
-        }
-    }
-}
+       stage('Nexus') {
+           steps {
+               script {
+               def username = 'admin'
+               def password = 'admin'
+                 sh "mvn deploy -Dmaven.test.skip=true -Dusername=${username} -Dpassword=${password}"
+
+                   }
+               }
+           }
+       }
+ }
