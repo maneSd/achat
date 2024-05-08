@@ -30,5 +30,14 @@ pipeline {
                 }
             }
         }
+         post {
+                success {
+                    emailext (
+                        to: ' msaidani86@gmail.com',
+                        subject: 'Pipeline Jenkins construit avec succès',
+                        body: 'Votre pipeline Jenkins a été construit avec succès.'
+                    )
+                }
+            }
     }
 }
