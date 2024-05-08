@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t achat:1.0.0 .'
+                sh 'docker build -t manelsaidani27/achat:1.0.0 .'
             }
         }
         stage('Push Docker Image to DockerHub') {
