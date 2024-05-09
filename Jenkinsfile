@@ -8,7 +8,7 @@ pipeline {
                 git branch: 'Manel_Branch', url: 'https://github.com/maneSd/achat.git'
             }
         }
-        stage('Maven') {
+/*         stage('Maven') {
             steps {
                 sh 'mvn clean install'
             }
@@ -45,7 +45,7 @@ pipeline {
                     }
                 }
             }
-        }
+        } */
         stage('Run Docker Compose') {
             steps {
                 sh 'docker-compose up -d'
