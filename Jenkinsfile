@@ -47,17 +47,14 @@ pipeline {
             }
         }
       stage('Run Docker Compose') {
-                  steps {
-                      script {
-                          // Change directory to your project directory
-                          dir('/var/lib/jenkins/workspace/Manel_2ALINFO6-DEVOPS') {
-                              // Run Docker Compose
-                              sh 'docker-compose up -d'
-                          }
-                      }
-                  }
+          steps {
+              script {
+                  def dockerComposePath = sh(script: 'which docker-compose', returnStdout: true).trim()
+                  sh "${dockerComposePath} up -d"
               }
           }
+      }
+
 
     post {
         success {
