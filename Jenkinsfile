@@ -51,24 +51,6 @@ pipeline {
                 sh 'docker-compose up -d'
             }
         }
-    stage('Configure Prometheus and Grafana') {
-               steps {
-                   script {
-                       def prometheusConfig = '''
-                       - job_name: your_spring_boot_app
-                         metrics_path: /prometheus
-                         static_configs:
-                         - targets: ['http://192.168.50.4/:8082']
-                       '''
-
-                       sh "echo '${prometheusConfig}' | sudo tee -a /etc/prometheus/prometheus.yml"
-                       // Assuming you need sudo permissions to write to the Prometheus config file
-
-                       // Add Grafana service to docker-compose.yml
-                       sh 'echo "  grafana:\n    image: grafana/grafana:latest\n    ports:\n      - "3000:3000"\n    depends_on:\n      - prometheus" >> docker-compose.yml'
-                   }
-               }
-           }
        }
     post {
         success {
