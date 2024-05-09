@@ -11,7 +11,7 @@ services:
     volumes:
       - db:/var/lib/mysql
 
-  app-timesheet:
+  app-achat:
     depends_on:
       - mysqldb
     image: manelsaidani27/achat:1.0.0
