@@ -46,11 +46,14 @@ pipeline {
                 }
             }
         }
-        stage('Run Docker Compose') {
-            steps {
-                sh 'docker-compose up -d'
-            }
-        }
+      stage('Run Docker Compose') {
+                  steps {
+                      script {
+                          def dockerComposePath = sh(script: 'which docker-compose', returnStdout: true).trim()
+                          sh "${dockerComposePath} up -d"
+                      }
+                  }
+              }
     }
 
     post {
