@@ -2,14 +2,7 @@ pipeline {
     agent any
 
     stages {
-     stage('Print Workspace Location') {
-                steps {
-                    script {
-                        // Print the current workspace location
-                        sh 'pwd'
-                    }
-                }
-            }
+
         stage('Git') {
             steps {
                 git branch: 'Manel_Branch', url: 'https://github.com/maneSd/achat.git'
@@ -53,12 +46,18 @@ pipeline {
                 }
             }
         }
-        stage('Run Docker Compose') {
-            steps {
-                sh 'docker-compose up -d'
-            }
-        }
-    }
+      stage('Run Docker Compose') {
+                  steps {
+                      script {
+                          // Change directory to your project directory
+                          dir('/var/lib/jenkins/workspace/Manel_2ALINFO6-DEVOPS') {
+                              // Run Docker Compose
+                              sh 'docker-compose up -d'
+                          }
+                      }
+                  }
+              }
+          }
 
     post {
         success {
