@@ -2,6 +2,14 @@ pipeline {
     agent any
 
     stages {
+     stage('Print Workspace Location') {
+                steps {
+                    script {
+                        // Print the current workspace location
+                        sh 'pwd'
+                    }
+                }
+            }
         stage('Git') {
             steps {
                 git branch: 'Manel_Branch', url: 'https://github.com/maneSd/achat.git'
