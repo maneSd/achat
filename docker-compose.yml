@@ -4,7 +4,7 @@ services:
     image: mysql:5.7
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ROOT_PASSWORD: "root"
       MYSQL_DATABASE: achatdb
     ports:
       - "3306:3306"
@@ -27,7 +27,6 @@ services:
       "spring.jpa.hibernate.ddl-auto": "update"}'
     stdin_open: true
     tty: true
-
 
 volumes:
   db:
